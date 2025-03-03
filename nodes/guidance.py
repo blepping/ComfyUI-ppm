@@ -45,10 +45,7 @@ class Guider_CFGLimiter(comfy.samplers.CFGGuider):
         cfg = self.cfg
         sigma = self.inner_model.model_sampling.sigma(timestep)
 
-        if self.sigma_start >= 0 and sigma[0] > self.sigma_start:
-            cfg = 1
-
-        if self.sigma_end >= 0 and sigma[0] <= self.sigma_end:
+        if not (self.sigma_end <= sigma[0] <= self.sigma_start):
             cfg = 1
 
         return comfy.samplers.sampling_function(
